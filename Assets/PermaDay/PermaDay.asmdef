@@ -1,0 +1,22 @@
+{
+    "name": "PermaDay",
+    "rootNamespace": "Scorsi",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "BepInEx.dll",
+        "Bindito.Core.dll",
+        "0Harmony.dll",
+        "TimberApi.dll",
+        "TimberApi.Core.dll",
+        "TimberApi.Common.dll",
+        "Timberborn.SkySystem.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

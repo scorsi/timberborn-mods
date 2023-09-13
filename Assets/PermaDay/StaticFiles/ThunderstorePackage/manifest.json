@@ -1,0 +1,10 @@
+{
+  "name": "PermaDay",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/scorsi/timberborn-mods",
+  "description": "Lock the sun to day time. Perfect for timelapses.",
+  "dependencies": [
+    "BepInEx-BepInExPack_Timberborn-5.4.21",
+    "Timberborn_Central-TimberAPI-0.6.0.1"
+  ]
+}
