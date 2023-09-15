@@ -18,11 +18,11 @@ namespace Scorsi.PermaDay
         public static MethodInfo Sun_DayStageColors => __sun_DayStageColors ??= AccessTools.Method(Sun, "DayStageColors", new[] { DayStage });
 
         private static MethodInfo? __sun_UpdateColors;
-        public static MethodInfo Sun_UpdateColors => __sun_UpdateColors ??= AccessTools.Method(Sun, "UpdateColors",new[] { DayStageTransition });
+        public static MethodInfo Sun_UpdateColors => __sun_UpdateColors ??= AccessTools.Method(Sun, "UpdateColors", new[] { DayStageTransition });
 
         private static MethodInfo? __sun_RotateSunWithCamera;
         public static MethodInfo Sun_RotateSunWithCamera => __sun_RotateSunWithCamera ??= AccessTools.Method(Sun, "RotateSunWithCamera", new[] { DayStageTransition });
-        
+
         private static Type? __dayStage;
         public static Type DayStage => __dayStage ??= AccessTools.TypeByName("Timberborn.SkySystem.DayStage");
 
@@ -58,7 +58,7 @@ namespace Scorsi.PermaDay
 
         private static PropertyInfo? __dayStageColors_SunXAngle;
         public static PropertyInfo DayStageColors_SunXAngle => __dayStageColors_SunXAngle ??= AccessTools.Property(DayStageColors, "SunXAngle");
-        
+
         private static PropertyInfo? __dayStageColors_TemperateWeatherFog;
         public static PropertyInfo DayStageColors_TemperateWeatherFog => __dayStageColors_TemperateWeatherFog ??= AccessTools.Property(DayStageColors, "TemperateWeatherFog");
 
