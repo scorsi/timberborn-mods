@@ -1,6 +1,9 @@
+using System.Security.Permissions;
 using HarmonyLib;
 using TimberApi.ConsoleSystem;
 using TimberApi.ModSystem;
+
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace Scorsi.PermaDay
 {
@@ -19,7 +22,7 @@ namespace Scorsi.PermaDay
             Log = consoleWriter;
             _mod = mod;
             _harmony = new Harmony(PluginGuid);
-            _harmony.PatchAll();
+            _harmony.PatchAll(typeof(Patches));
         }
     }
 }

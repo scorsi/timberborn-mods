@@ -1,70 +1,41 @@
-﻿using System.Reflection;
-using HarmonyLib;
+﻿using HarmonyLib;
+using Timberborn.SkySystem;
 using UnityEngine;
 
 namespace Scorsi.PermaDay
 {
     public class Patches
     {
-        [HarmonyPatch]
-        public class Sun_UpdateColors
+        [HarmonyPatch(typeof(Sun), nameof(Sun.UpdateColors), typeof(DayStageTransition))]
+        [HarmonyPrefix]
+        public static bool Sun_UpdateColors_Prefix(Sun __instance, DayStageTransition dayStageTransition)
         {
-            public static MethodInfo TargetMethod() => ReflexionAccessor.Sun_UpdateColors;
+            var light = __instance._sun;
+            var dayStageColors = __instance.DayStageColors(DayStage.Day);
+            var fog = dayStageColors.TemperateWeatherFog;
 
-            private static object _lastInstance;
+            light.color = dayStageColors.SunColor;
+            light.intensity = dayStageColors.SunIntensity;
+            light.shadowStrength = dayStageColors.ShadowStrength;
+            RenderSettings.ambientSkyColor = dayStageColors.AmbientSkyColor;
+            RenderSettings.ambientEquatorColor = dayStageColors.AmbientEquatorColor;
+            RenderSettings.ambientGroundColor = dayStageColors.AmbientGroundColor;
+            RenderSettings.reflectionIntensity = dayStageColors.ReflectionsIntensity;
+            RenderSettings.fogColor = fog.FogColor;
+            RenderSettings.fogDensity = fog.FogDensity;
 
-            public static bool Prefix(object __instance, object dayStageTransition)
-            {
-                // TODO: handle drought
-
-                if (_lastInstance == __instance)
-                {
-                    return false;
-                }
-
-                _lastInstance = __instance;
-
-                var light = (Light)ReflexionAccessor.Sun_light.GetValue(__instance);
-                var dayStageColors = ReflexionAccessor.Sun_DayStageColors.Invoke(__instance, new[] { ReflexionAccessor.DayStage_Day });
-                var fog = ReflexionAccessor.DayStageColors_TemperateWeatherFog.GetValue(dayStageColors);
-
-                light.color = (Color)ReflexionAccessor.DayStageColors_SunColor.GetValue(dayStageColors);
-                light.intensity = (float)ReflexionAccessor.DayStageColors_SunIntensity.GetValue(dayStageColors);
-                light.shadowStrength = (float)ReflexionAccessor.DayStageColors_ShadowStrength.GetValue(dayStageColors);
-                RenderSettings.ambientSkyColor = (Color)ReflexionAccessor.DayStageColors_AmbientSkyColor.GetValue(dayStageColors);
-                RenderSettings.ambientEquatorColor = (Color)ReflexionAccessor.DayStageColors_AmbientEquatorColor.GetValue(dayStageColors);
-                RenderSettings.ambientGroundColor = (Color)ReflexionAccessor.DayStageColors_AmbientGroundColor.GetValue(dayStageColors);
-                RenderSettings.reflectionIntensity = (float)ReflexionAccessor.DayStageColors_ReflectionsIntensity.GetValue(dayStageColors);
-                RenderSettings.fogColor = (Color)ReflexionAccessor.FogSettings_FogColor.GetValue(fog);
-                RenderSettings.fogDensity = (float)ReflexionAccessor.FogSettings_FogDensity.GetValue(fog);
-
-                return false;
-            }
+            return false;
         }
 
-        [HarmonyPatch]
-        public class Sun_RotateSunWithCamera
+        [HarmonyPatch(typeof(Sun), nameof(Sun.RotateSunWithCamera), typeof(DayStageTransition))]
+        public static bool Sun_RotateSunWithCamera(Sun __instance, DayStageTransition dayStageTransition)
         {
-            public static MethodInfo TargetMethod() => ReflexionAccessor.Sun_RotateSunWithCamera;
+            var light = __instance._sun;
+            var dayStageColors = __instance.DayStageColors(DayStage.Day);
 
-            private static object _lastInstance;
+            light.transform.localRotation = Quaternion.Euler(dayStageColors.SunXAngle, 240f, 0);
 
-            public static bool Prefix(object __instance, object dayStageTransition)
-            {
-                if (_lastInstance == __instance)
-                {
-                    return false;
-                }
-
-                _lastInstance = __instance;
-
-                var light = (Light)ReflexionAccessor.Sun_light.GetValue(__instance);
-                var dayStageColors = ReflexionAccessor.Sun_DayStageColors.Invoke(__instance, new[] { ReflexionAccessor.DayStage_Day });
-
-                light.transform.localRotation = Quaternion.Euler((float)ReflexionAccessor.DayStageColors_SunXAngle.GetValue(dayStageColors), 240f, 0);
-
-                return false;
-            }
+            return false;
         }
     }
 }
